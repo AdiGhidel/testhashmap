@@ -1,6 +1,7 @@
 #include<bits/stdc++.h> 
 using namespace std;
 
+//Node
 template <typename K, typename V>
 class HashNode {
 private:
@@ -15,14 +16,23 @@ public:
     void setValue(V value);
     void setKeyValue(K key, V value);
 };
-
+//compare 2 hashnodes
+template <typename K, typename V>
+bool operator ==(const HashNode<K,V> &l, const HashNode<K,V> &r) {
+    return l.key == r.key && l.value == r.value;
+}
+//Bucket
 template <typename K, typename V>
 class Bucket {
 public:
-    int hash;
     vector<HashNode<K,V>> nodes;
-    Bucket(): hash(0) { }
+    Bucket() {}
+    pair<bool, V> findValue(K key);
+    bool insertElement(HashNode<K,V> node);
+    bool removeElement(HashNode<K,V> node);
 };
+
+//HashMap
 template <typename K, typename V>
 class HashMap {
 private:
