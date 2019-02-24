@@ -1,6 +1,6 @@
-all: 
-	g++ hash.cpp -o hashmap -Wall
-run: hashmap
+all: Hash.o
+	g++ Hash.cpp -o hashmap
+run: 
 	./hashmap
 clean: 
 	rm *.o
