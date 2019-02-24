@@ -120,7 +120,8 @@ void HashMap<K, V>::resize(bool half)
         //resize only if you have at least intital size
         if (bucketSize > 4)
         {
-            bucketSize >>= 2;
+            cout << "actual shrink" << endl;
+            bucketSize >>= 1;
             vector<Bucket<K, V>> oldBuckets = Buckets;
 
             Buckets.clear();
@@ -135,21 +136,22 @@ void HashMap<K, V>::resize(bool half)
                 }
             }
         }
-        else
-        {
-            bucketSize <<= 2;
-            vector<Bucket<K, V>> oldBuckets = Buckets;
+    }
+    else
+    {
+        cout << "double" << endl;
+        bucketSize <<= 1;
+        vector<Bucket<K, V>> oldBuckets = Buckets;
 
-            Buckets.clear();
-            Buckets.resize(bucketSize);
+        Buckets.clear();
+        Buckets.resize(bucketSize);
 
-            for (int i = 0; i < oldBuckets.size(); i++)
-            { //entire size of old vector
-                vector<HashNode<K, V>> nodelist = oldBuckets[i].nodes;
-                for (int j = 0; j < nodelist.size(); j++)
-                {
-                    this->insert(nodelist[j]);
-                }
+        for (int i = 0; i < oldBuckets.size(); i++)
+        { //entire size of old vector
+            vector<HashNode<K, V>> nodelist = oldBuckets[i].nodes;
+            for (int j = 0; j < nodelist.size(); j++)
+            {
+                this->insert(nodelist[j]);
             }
         }
     }
@@ -167,12 +169,12 @@ void HashMap<K, V>::check_size(int delta)
     if (occupied + delta >= bucketSize / 2)
     {
         //not half
+        printf("double %d > %d", occupied+delta, bucketSize / 2);
         resize(false);
-    }
-    //if remove
-    if (occupied + delta <= bucketSize / 4)
+    } else if (occupied + delta <= bucketSize / 4)
     {
         //half
+        printf("shrink %d <= %d", occupied+delta, bucketSize /4);
         resize(true);
     }
     //do nothing
@@ -254,12 +256,14 @@ V HashMap<K, V>::getValue(K key)
 int main()
 {
     //Hashnode UT
+    cout << "=========HashNode========" << endl;
     HashNode<int, int> h = HashNode<int, int>(1, 2);
     cout << h.getValue() << h.getKey() << endl;
     h.setKey(10);
     h.setValue(20);
     cout << h.getKeyValue().first << " " << h.getKeyValue().second << endl;
     //Bucket UT
+    cout << "=========Bucket========" << endl;
     Bucket<int, int> b;
     b.insertElement(HashNode<int, int>(12, 13));
     b.insertElement(HashNode<int, int>(23, 24));
@@ -270,6 +274,7 @@ int main()
     cout << b.removeElement(HashNode<int, int>(23, 24)) << endl;
 
     //HashMap ut
+    cout << "=========Hash========" << endl;
     HashMap<string, int> hash;
     hash.insert(HashNode<string, int>("dedu", 10));
     cout << hash.find("dedu").getKey() << " " << hash.find("dedu").getValue() << endl;
