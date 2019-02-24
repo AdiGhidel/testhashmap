@@ -18,8 +18,8 @@ public:
 };
 //compare 2 hashnodes
 template <typename K, typename V>
-bool operator ==(const HashNode<K,V> &l, const HashNode<K,V> &r) {
-    return l.key == r.key && l.value == r.value;
+bool operator ==(HashNode<K,V> &l, HashNode<K,V> &r) {
+    return l.getKey() == r.getKey() && l.getValue() == r.getValue();
 }
 //Bucket
 template <typename K, typename V>
@@ -28,6 +28,7 @@ public:
     vector<HashNode<K,V>> nodes;
     Bucket() {}
     pair<bool, V> findValue(K key);
+    bool removeElement(K key);
     bool insertElement(HashNode<K,V> node);
     bool removeElement(HashNode<K,V> node);
 };
@@ -41,9 +42,11 @@ private:
     vector<Bucket<K,V>> Buckets;
     void resize();
     bool check_size();
+    bool hash();
 public: 
     HashMap();
-    void insert();
-    void remove();
-    void find();
+    void insert(HashNode<K,V> node);
+    bool remove(HashNode<K,V> node);
+    bool remove(HashNode<K,V> node);
+    HashNode<K,V> find(K key);
 };
